@@ -1,0 +1,99 @@
+{% extends 'accounts/generic.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Objective -->
+
+    <h2 class="featurette-heading">Objective</h2>
+
+    <p class="lead">Passwords are ubiquitous today on any platform, on possibly
+        any website. But to remember so difficult passwords and that too on
+        numerous websites seems daunting and therefore you can devise a project
+        illustrating graphical password strategy.</p>
+    <p class="lead">To provide users a graphical password authentication system
+        where instead of creating a alphanumeric password a user has to select
+        graphical objects in a particular order to keep it as their
+        password. </p>
+    <p class="lead">This will allow the user to set passwords in the form of
+        graphical presentation in a certain pattern and later use that pattern
+        to login to the system. </p>
+
+
+    <!-- Objective Over -->
+
+    <h2 class="featurette-heading">Fact Check: <span class="text-muted">Statistics</span>
+    </h2>
+
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+        <div class="col-lg-4">
+            <img class="rounded-circle" src="{% static 'images/1st.png' %}"
+                 alt="Generic placeholder image" width="140" height="140">
+            <p>Users have had to reset their password in the last three
+                months</p>
+            <p><a class="btn btn-secondary"
+                  href="https://www.digitalinformationworld.com/2019/12/new-password-study-finds-78-of-people-had-to-reset-a-password-they-forgot-in-past-90-days.html"
+                  role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+            <img class="rounded-circle" src="{% static 'images/2nd.png' %}"
+                 alt="Generic placeholder image" width="140" height="140">
+            <p>Employed population reset their password at least once in a
+                calendric year</p>
+            <p><a class="btn btn-secondary"
+                  href="https://securityintelligence.com/news/study-3-in-4-users-required-a-reset-of-a-forgotten-password-in-the-last-90-days/"
+                  role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+            <img class="rounded-circle" src="{% static 'images/3rd.png' %}"
+                 alt="Generic placeholder image" width="140" height="140">
+            <p>Organizations rely on sticky notes for password management</p>
+            <p><a class="btn btn-secondary"
+                  href="https://www.okta.com/identity-101/alphanumeric-characters-password/"
+                  role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+            <img class="rounded-circle" src="{% static 'images/4th.png' %}"
+                 alt="Generic placeholder image" width="140" height="140">
+            <p>People use a password manager</p>
+            <p><a class="btn btn-secondary"
+                  href="https://www.infosecurity-magazine.com/news/google-survey-finds-two-users/"
+                  role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+            <img class="rounded-circle" src="{% static 'images/5th.png' %}"
+                 alt="Generic placeholder image" width="140" height="140">
+            <p>Individuals and IT specialists protect their accounts by an
+                alternative method that doesn’t involve the use of passwords</p>
+            <p><a class="btn btn-secondary"
+                  href="https://www.okta.com/identity-101/alphanumeric-characters-password/"
+                  role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
+    <!-- OUR PROJECT -->
+    <h2 class="featurette-heading">Our Solution</h2>
+
+    <p class="lead">We propose a graphical password authentication system.
+        Research has shown that graphical objects or images are more easier to
+        remember. Human brain tends to storage visual information for a longer
+        period of time as compared to alphanumeric series.</p>
+    <p class="lead">In our solution, users must select specific icons from a the
+        grid in a sequence. The icons are displayed on the screen in a tab.
+        Users will choose icons from two separate tabs. The values assigned to
+        the selected icons will be combined to create a passcode value, which
+        will be saved in the database along with the username. In our solution,
+        users must select specific icons from a the grid in a sequence. The
+        icons are displayed on the screen in a tab. Users will choose icons from
+        two separate tabs. The values assigned to the selected icons will be
+        combined to create a passcode value, which will be saved in the database
+        along with the username. To generate the passkey we have used PBKDF2.
+        PBKFD2(Password-Based Key Derivation Function 2), is recommended from
+        National Institute of Standards and Technology. It is used to reduce
+        vulnerabilities of brute force. </p>
+    <br>
+    <!-- OUR PROJECT OVER -->
+
+{% endblock %}
+

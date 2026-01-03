@@ -1,0 +1,234 @@
+{% extends 'accounts/generic.html' %}
+{% load static %}
+
+{% block content %}
+<form action="login" method="POST" id="loginForm">
+    {% csrf_token %}
+
+    <h1 style="text-align: center; font-family:'Courier New', Courier, monospace">
+        GRAPHICAL PASSWORD AUTHENTICATION</h1>
+
+    <img src="{% static 'images/apex.png' %}"
+        style="width: 20%;height: 5%;display: block;margin: auto;margin-bottom: 3%;">
+
+    <div class="d-flex justify-content-center">
+        <input type="text" class="form-control" placeholder="USER ID" name="username" style="width: 35%;" required>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <input type="password" class="form-control" placeholder="PASSWORD" name="password" style="width: 35%;" required>
+    </div>
+    <br>
+
+    <h3 style="text-align: center; color: white; font-family:'Courier New', Courier, monospace">
+        Enter Your Graphical Password:</h3>
+
+    <!-- Selection Info -->
+    <div class="d-flex justify-content-center" style="margin-bottom: 20px;">
+        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; width: 35%;">
+            <p style="color: white; margin: 0; text-align: center;">
+                <strong>Selected: <span id="selectionCount">0</span></strong>
+            </p>
+            <p style="color: #ffeb3b; margin: 5px 0 0 0; text-align: center; font-size: 14px;" id="selectionHint">
+                Select images in the same order as registration
+            </p>
+            <button type="button" class="btn btn-warning btn-sm" style="display: block; margin: 10px auto 0;"
+                onclick="clearSelection()">Clear Selection</button>
+        </div>
+    </div>
+
+    <!-- Hidden field to store selected images -->
+    <input type="hidden" name="graphical_password" id="graphicalPassword">
+
+    <!-- Image Grid -->
+    <div style="max-width: 90%; margin: auto;">
+        <div class="image-grid">
+            {% for image in images %}
+            <div class="image-item" onclick="selectImage('{{ image }}', this)">
+                <img src="{% static 'images/' %}{{ image }}" alt="{{ image }}"
+                    style="width: 100%; height: 100%; object-fit: contain;">
+                <div class="selection-number"></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-secondary btn-lg"
+        style="margin: auto;margin-top:6%;display: block; margin-bottom: 5%;">
+        LOGIN
+    </button>
+
+    <p style="text-align: center; color: white; margin-bottom: 10%;">
+        Don't have an account? <a href="{% url 'register' %}" style="color: #4CAF50;">Register here</a>
+    </p>
+</form>
+
+<div style="text-align: center; margin-top: 20px;">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show"
+        style="width: 50%; margin: 10px auto;" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .image-item {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 3px solid transparent;
+    }
+
+    .image-item img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+    }
+
+    .image-item:hover {
+        transform: scale(1.05);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    .image-item.selected {
+        border: 3px solid #2196F3;
+        background: rgba(33, 150, 243, 0.2);
+        box-shadow: 0 0 20px rgba(33, 150, 243, 0.8);
+    }
+
+    .selection-number {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: #2196F3;
+        color: white;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .image-item.selected .selection-number {
+        display: flex;
+    }
+
+    .alert-success {
+        background-color: rgba(76, 175, 80, 0.9);
+        border-color: #4CAF50;
+        color: white;
+    }
+
+    .alert-error,
+    .alert-danger {
+        background-color: rgba(244, 67, 54, 0.9);
+        border-color: #f44336;
+        color: white;
+    }
+
+    .alert-info {
+        background-color: rgba(33, 150, 243, 0.9);
+        border-color: #2196F3;
+        color: white;
+    }
+</style>
+
+<script>
+    let selectedImages = [];
+
+    function selectImage(imageName, element) {
+        const index = selectedImages.indexOf(imageName);
+
+        if (index > -1) {
+            // Deselect image
+            selectedImages.splice(index, 1);
+            element.classList.remove('selected');
+            updateAllNumbers();
+        } else {
+            // Select image (no max limit for login to avoid giving hints)
+            selectedImages.push(imageName);
+            element.classList.add('selected');
+            const numberDiv = element.querySelector('.selection-number');
+            numberDiv.textContent = selectedImages.length;
+        }
+
+        updateSelection();
+    }
+
+    function updateAllNumbers() {
+        // Remove all selection classes first
+        document.querySelectorAll('.image-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+
+        // Re-apply selections with correct numbers
+        selectedImages.forEach((imageName, index) => {
+            const items = document.querySelectorAll('.image-item');
+            items.forEach(item => {
+                const img = item.querySelector('img');
+                if (img.alt === imageName) {
+                    item.classList.add('selected');
+                    const numberDiv = item.querySelector('.selection-number');
+                    numberDiv.textContent = index + 1;
+                }
+            });
+        });
+    }
+
+    function updateSelection() {
+        const count = selectedImages.length;
+        document.getElementById('selectionCount').textContent = count;
+        document.getElementById('graphicalPassword').value = selectedImages.join(',');
+
+        const hint = document.getElementById('selectionHint');
+        if (count === 0) {
+            hint.textContent = 'Select images in the same order as registration';
+            hint.style.color = '#ffeb3b';
+        } else {
+            hint.textContent = count + ' image(s) selected';
+            hint.style.color = '#2196F3';
+        }
+    }
+
+    function clearSelection() {
+        selectedImages = [];
+        document.querySelectorAll('.image-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+        updateSelection();
+    }
+
+    // Form validation
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+        if (selectedImages.length === 0) {
+            e.preventDefault();
+            alert('Please select your graphical password!');
+            return false;
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'accounts/bootstrap.html' %} {% load static %}
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-dark bg-opacity-75"
+         style="backdrop-filter: blur(5px);">
+        <a class=" navbar-brand" href="/">TEAM APEX</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav justify-content-end ml-auto">
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item ">
+                        <a class="nav-link" href="logout">LOGOUT</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item ">
+                        <a class="nav-link" href="register">REGISTER</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">LOGIN<span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                {% endif %}
+                <li class="nav-item ">
+                    <a class="nav-link" href="about">ABOUT</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="team">TEAM</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block footer %}
+<!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © 2022 Copyright: KJSCE
+  </div>
+  <!-- Copyright -->
+
+    </footer>
+{% endblock %}
